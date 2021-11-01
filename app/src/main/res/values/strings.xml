@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">CryptoTracker</string>
+    <!-- Strings related to login -->
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">TODO: crypto details</string>
+    <string name="symbol_label"><b>Symbol:</b>&#160;</string>
+    <string name="name_label"><b>Name:</b>&#160;</string>
+    <string name="crypto_image_descr">Crypto coin image</string>
+</resources>

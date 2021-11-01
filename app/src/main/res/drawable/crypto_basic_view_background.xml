@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- selected. This style will be applied when the view is selected -->
+    <item android:state_selected="true">
+        <shape android:tint="@color/orangeDarkOpaque">
+            <solid android:color="@color/white" />
+        </shape>
+    </item>
+
+    <!-- selected. This style will be applied when the view is selected -->
+    <item android:state_focused="true">
+        <shape android:tint="@color/orangeDarkOpaque">
+            <solid android:color="@color/white" />
+        </shape>
+    </item>
+
+    <!-- default -->
+    <item>
+        <shape>
+            <solid android:color="@android:color/white" />
+        </shape>
+    </item>
+
+</selector>
