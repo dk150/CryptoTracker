@@ -5,26 +5,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import rs.dk150.cryptotracker.R
 import rs.dk150.cryptotracker.data.CryptoCurrencyList
-import rs.dk150.cryptotracker.databinding.FragmentCryptoListBinding
+import rs.dk150.cryptotracker.databinding.FragmentBasicListBinding
 
 
-class CryptoListFragment : Fragment(), CryptoListAdapter.CryptoListListener {
+class BasicListFragment : Fragment(), BasicListAdapter.CryptoListListener {
 
     private lateinit var viewModel: CryptoViewModel
-    private var _binding: FragmentCryptoListBinding? = null
 
+    private var _binding: FragmentBasicListBinding? = null
     // This property is only valid between onCreateView and onDestroyView
     private val binding get() = _binding!!
     private lateinit var cryptoRecyclerView: RecyclerView
-    private var showToast = true
+    //private var showToast = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,7 +33,7 @@ class CryptoListFragment : Fragment(), CryptoListAdapter.CryptoListListener {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentCryptoListBinding.inflate(inflater, container, false)
+        _binding = FragmentBasicListBinding.inflate(inflater, container, false)
         return binding.root
 
     }
@@ -41,53 +42,56 @@ class CryptoListFragment : Fragment(), CryptoListAdapter.CryptoListListener {
         super.onViewCreated(view, savedInstanceState)
         val application = requireNotNull(activity).application
         viewModel =
-            ViewModelProvider(this, ViewModelFactory(application))[CryptoViewModel::class.java]
+            ViewModelProvider(this.requireActivity(), ViewModelFactory(application))[CryptoViewModel::class.java]
 
         cryptoRecyclerView = binding.cryptoList
         val loadingProgressBar = binding.loading
 
-        cryptoRecyclerView.adapter = CryptoListAdapter(null, this)
-        cryptoRecyclerView.layoutManager = LinearLayoutManager(activity)
-        cryptoRecyclerView.addItemDecoration(
-            DividerItemDecoration(
-                cryptoRecyclerView.context,
-                DividerItemDecoration.VERTICAL
-            )
-        )
-        cryptoRecyclerView.overScrollMode = View.OVER_SCROLL_NEVER
+        // set up recyclerView
+        cryptoRecyclerView.also{
+            it.adapter = BasicListAdapter(null, this)
+            it.layoutManager = LinearLayoutManager(activity)
+            val drawable = AppCompatResources.getDrawable(it.context, R.drawable.divider)
+            if(drawable!=null) {
+                it.addItemDecoration(
+                    DividerItemDecorator(
+                        drawable
+                    )
+                )
+            }
+        }
 
-        viewModel.fetchCrCsResult.observe(viewLifecycleOwner,
+        viewModel.crCsResult.observe(viewLifecycleOwner,
             Observer { singleEvent ->
                 singleEvent ?: return@Observer
-                showToast = !singleEvent.hasBeenHandled
+                //showToast = !singleEvent.hasBeenHandled
                 val result = singleEvent.getContent()
                 loadingProgressBar.visibility = View.GONE
 
                 result?.onSuccess { showList(it) }
-                result?.onFailure { showFetchFailed(it.toString()) }
+                result?.onFailure { showFetchFailed(it.message) }
             })
 
-        if (viewModel.fetchCrCsResult.value == null) {
+        if (viewModel.crCsResult.value == null) {
             viewModel.fetchCrCs()
         }
     }
 
     private fun showList(result: CryptoCurrencyList?) {
-        val appContext = context?.applicationContext ?: return
         result?.let {
             it.data?.let { data ->
-                cryptoRecyclerView.adapter = CryptoListAdapter(data.values, this)
+                cryptoRecyclerView.adapter = BasicListAdapter(data.values.toList(), this)
             }
-            if (showToast) {
+            /*if (showToast) {
+                val appContext = context?.applicationContext ?: return
                 Toast.makeText(appContext, "${it.response}! ${it.message}", Toast.LENGTH_LONG)
                     .show()
-            }
+            }*/
         }
     }
 
-    private fun showFetchFailed(errorString: String) {
-        val appContext = context?.applicationContext ?: return
-        Toast.makeText(appContext, errorString, Toast.LENGTH_LONG).show()
+    private fun showFetchFailed(errorString: String?) {
+        Toast.makeText(this.context, errorString, Toast.LENGTH_LONG).show()
     }
 
     override fun onDestroyView() {
@@ -98,7 +102,7 @@ class CryptoListFragment : Fragment(), CryptoListAdapter.CryptoListListener {
     override fun listItemClicked(position: Int) {
         view?.let {
             val action =
-                CryptoListFragmentDirections.actionCryptoListFragmentToCryptoDetailsFragment(
+                BasicListFragmentDirections.actionBasicListFragmentToDetailsFragment(
                     position
                 )
             it.findNavController().navigate(action)

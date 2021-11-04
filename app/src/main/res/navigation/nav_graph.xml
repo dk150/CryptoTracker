@@ -2,22 +2,22 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@id/cryptoListFragment">
+    app:startDestination="@id/basicListFragment">
 
     <fragment
-        android:id="@+id/cryptoListFragment"
-        android:name="rs.dk150.cryptotracker.ui.CryptoListFragment"
+        android:id="@+id/basicListFragment"
+        android:name="rs.dk150.cryptotracker.ui.BasicListFragment"
         android:label="fragment_crypto_list"
-        tools:layout="@layout/fragment_crypto_list" >
+        tools:layout="@layout/fragment_basic_list" >
         <action
-            android:id="@+id/action_cryptoListFragment_to_cryptoDetailsFragment"
-            app:destination="@id/cryptoDetailsFragment" />
+            android:id="@+id/action_basicListFragment_to_DetailsFragment"
+            app:destination="@id/detailsFragment" />
     </fragment>
     <fragment
-        android:id="@+id/cryptoDetailsFragment"
-        android:name="rs.dk150.cryptotracker.ui.CryptoDetailsFragment"
+        android:id="@+id/detailsFragment"
+        android:name="rs.dk150.cryptotracker.ui.DetailsFragment"
         android:label="fragment_crypto_details"
-        tools:layout="@layout/fragment_crypto_details" >
+        tools:layout="@layout/fragment_details" >
         <argument
             android:name="position"
             app:argType="integer"

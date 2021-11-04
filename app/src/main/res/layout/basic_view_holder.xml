@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/crypto_basic_view_background">
+    android:background="@drawable/basic_view_background">
 
     <ProgressBar
         android:id="@+id/progress"
@@ -19,20 +19,21 @@
         android:id="@+id/image"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/fragment_margin"
         android:adjustViewBounds="true"
         android:scaleType="centerInside"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="invisible"
-        android:contentDescription="@string/crypto_image_descr"/>
+        android:contentDescription="@string/crypto_image_descr"
+        tools:src="@drawable/placeholder_img"/>
 
     <TextView
         android:id="@+id/name_label"
         android:layout_width="wrap_content"
         android:layout_height="21dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="@dimen/text_margin"
         android:textSize="14sp"
         android:text="@string/name_label"
         app:layout_constraintStart_toEndOf="@id/image"
@@ -42,7 +43,7 @@
         android:id="@+id/name"
         android:layout_width="0dp"
         android:layout_height="21dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="@dimen/fragment_margin"
         android:autoSizeTextType="uniform"
         android:autoSizeMaxTextSize="14sp"
         android:maxLines="1"
@@ -56,7 +57,7 @@
         android:id="@+id/symbol_label"
         android:layout_width="wrap_content"
         android:layout_height="21dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="@dimen/text_margin"
         android:textSize="14sp"
         android:text="@string/symbol_label"
         app:layout_constraintStart_toEndOf="@id/image"
@@ -66,7 +67,7 @@
         android:id="@+id/symbol"
         android:layout_width="0dp"
         android:layout_height="21dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="@dimen/fragment_margin"
         android:autoSizeTextType="uniform"
         android:autoSizeMaxTextSize="14sp"
         android:maxLines="1"

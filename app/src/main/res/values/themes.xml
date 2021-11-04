@@ -13,5 +13,39 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="android:colorEdgeEffect">@color/orangeDark</item>
+        <item name="tabStyle">@style/Widget.App.TabLayout</item>
+        <item name="textInputStyle">@style/Widget.App.ExposedDropdownMenu</item>
+        <item name="android:overScrollMode">never</item>
+    </style>
+
+    <style name="Widget.App.ExposedDropdownMenu" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="boxBackgroundColor">@color/light_gray</item>
+        <item name="boxStrokeColor">@android:color/transparent</item>
+        <!-- Dropdown arrow color -->
+        <item name="endIconTint">@color/orange</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.ExposedDropdownMenu</item>
+    </style>
+    <style name="ThemeOverlay.App.ExposedDropdownMenu" parent="">
+        <item name="autoCompleteTextViewStyle">@style/ExposedDropdownMenu.App.AutoCompleteTextView</item>
+        <item name="colorSurface">@color/light_gray</item>
+    </style>
+    <style name="ExposedDropdownMenu.App.AutoCompleteTextView" parent="Widget.AppCompat.AutoCompleteTextView">
+        <item name="android:background">@null</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="Widget.App.TabLayout" parent="Widget.MaterialComponents.TabLayout">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.TabLayout</item>
+    </style>
+
+    <style name="ThemeOverlay.App.TabLayout" parent="">
+        <item name="colorPrimary">@color/orange</item>
+        <item name="colorOnSurface">@color/black</item>
     </style>
 </resources>

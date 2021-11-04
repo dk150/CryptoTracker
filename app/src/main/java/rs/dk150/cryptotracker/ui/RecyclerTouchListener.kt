@@ -19,26 +19,26 @@ class RecyclerTouchListener(
 
     override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
         val child = rv.findChildViewUnder(e.x, e.y)
-        if (child != null && clickListener != null) {
+        if (clickListener != null) {
             when (e.action) {
                 MotionEvent.ACTION_DOWN -> {
-                    mScrolling = false
-                    mDownY = e.y
-                    mDownX = e.x
-                    clickListener.onDown(
-                        child,
-                        rv.getChildAdapterPosition(child)
-                    )
+                    child?.let {
+                        mScrolling = false
+                        mDownY = e.y
+                        mDownX = e.x
+                        clickListener.onDown(
+                            child
+                        )
+                    }
                 }
                 MotionEvent.ACTION_UP -> {
                     if (!mScrolling) {
-                        clickListener.onShortLongClick(child, rv.getChildAdapterPosition(child))
-                        return true
+                        child?.let{
+                            clickListener.onShortLongClick(child, rv.getChildAdapterPosition(child))
+                            return true
+                        }
                     } else {
-                        clickListener.onUp(
-                            child,
-                            rv.getChildAdapterPosition(child)
-                        )
+                        clickListener.onUp()
                     }
                 }
                 MotionEvent.ACTION_MOVE -> {
@@ -61,8 +61,8 @@ class RecyclerTouchListener(
     override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
 
     interface ClickListener {
-        fun onDown(view: View?, position: Int)
-        fun onUp(view: View?, position: Int)
+        fun onDown(view: View?)
+        fun onUp()
         fun onShortLongClick(view: View?, position: Int)
     }
 }

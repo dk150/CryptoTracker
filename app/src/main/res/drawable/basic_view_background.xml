@@ -3,14 +3,14 @@
 
     <!-- selected. This style will be applied when the view is selected -->
     <item android:state_selected="true">
-        <shape android:tint="@color/orangeDarkOpaque">
+        <shape android:tint="@color/orangeLightOpaque">
             <solid android:color="@color/white" />
         </shape>
     </item>
 
     <!-- selected. This style will be applied when the view is selected -->
     <item android:state_focused="true">
-        <shape android:tint="@color/orangeDarkOpaque">
+        <shape android:tint="@color/orangeLightOpaque">
             <solid android:color="@color/white" />
         </shape>
     </item>

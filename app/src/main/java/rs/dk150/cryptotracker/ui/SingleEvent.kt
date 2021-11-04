@@ -1,3 +1,5 @@
+@file:Suppress("MemberVisibilityCanBePrivate")
+
 package rs.dk150.cryptotracker.ui
 
 open class SingleEvent<out T>(private val content: T) {

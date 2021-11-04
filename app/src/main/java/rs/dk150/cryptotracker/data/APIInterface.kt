@@ -14,4 +14,12 @@ interface APIInterface {
     @Headers("authorization: Apikey {${api_key}}")
     @GET("/data/all/coinlist")
     fun getCrCs(@Query("summary") onlyBasicInfo: Boolean = true): Call<CryptoCurrencyList>
+
+    @Headers("authorization: Apikey {${api_key}}")
+    @GET("/data/all/coinlist")
+    fun getCrCsDetails(@Query("fsym") symbol: String): Call<CryptoCurrencyList>
+
+    @Headers("authorization: Apikey {${api_key}}")
+    @GET("/data/price")
+    fun getCrCsConversion(@Query("fsym") symbol: String, @Query("tsyms") symbols: String): Call<CurrencyConversion>
 }

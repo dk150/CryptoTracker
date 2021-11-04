@@ -2,8 +2,11 @@
     <string name="app_name">CryptoTracker</string>
     <!-- Strings related to login -->
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">TODO: crypto details</string>
     <string name="symbol_label"><b>Symbol:</b>&#160;</string>
     <string name="name_label"><b>Name:</b>&#160;</string>
     <string name="crypto_image_descr">Crypto coin image</string>
+    <string name="curr_value"><b>Current value in&#160;</b></string>
+    <string name="double_dot"><b>:&#160;</b></string>
+    <string name="value_label">%1$s:</string>
+    <string name="imageLabel">image:</string>
 </resources>

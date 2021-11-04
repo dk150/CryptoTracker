@@ -17,12 +17,13 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import rs.dk150.cryptotracker.R
 import rs.dk150.cryptotracker.data.CryptoCurrency
+import rs.dk150.cryptotracker.databinding.BasicViewHolderBinding
 
 
-class CryptoListAdapter(
-    private val list: Collection<CryptoCurrency>?,
+class BasicListAdapter(
+    private val list: List<CryptoCurrency>?,
     private val listener: CryptoListListener
-) : RecyclerView.Adapter<CryptoListAdapter.CryptoViewHolder>(),
+) : RecyclerView.Adapter<BasicListAdapter.BasicViewHolder>(),
     RecyclerTouchListener.ClickListener {
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
@@ -35,22 +36,25 @@ class CryptoListAdapter(
         )
     }
 
-    private var selectedItem: Int = RecyclerView.NO_POSITION
+    private var selectedView: View? = null
 
     interface CryptoListListener {
         fun listItemClicked(position: Int)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CryptoViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.crypto_basic_view_holder, parent, false)
-        return CryptoViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BasicViewHolder {
+        return BasicViewHolder(
+            BasicViewHolderBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
-    override fun onBindViewHolder(holder: CryptoViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: BasicViewHolder, position: Int) {
         list?.let { list ->
-            val pos = holder.adapterPosition
-            holder.rootView.isSelected = pos == selectedItem
+            val pos = holder.bindingAdapterPosition
             val element = list.elementAt(pos)
             holder.nameTextView.text = element.fullName
             holder.symbolTextView.text = element.symbol
@@ -58,6 +62,7 @@ class CryptoListAdapter(
             imageView.visibility = View.INVISIBLE
             val progressBar = holder.progressBar
             progressBar.visibility = View.VISIBLE
+
             var requestBuilder =
                 Glide.with(imageView.context).load("https://cryptocompare.com" + element.imageUrl)
             requestBuilder = requestBuilder.listener(object : RequestListener<Drawable> {
@@ -97,30 +102,31 @@ class CryptoListAdapter(
 
     override fun getItemCount(): Int = list?.size ?: 0
 
-    class CryptoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var rootView: View = itemView.rootView
-        var progressBar: ProgressBar = itemView.findViewById(R.id.progress)
-        var imageView: ImageView = itemView.findViewById(R.id.image)
-        var nameTextView: TextView = itemView.findViewById(R.id.name)
-        var symbolTextView: TextView = itemView.findViewById(R.id.symbol)
+    override fun onDown(view: View?) {
+        selectedView = view
+        selectedView?.isSelected = true
     }
 
-    override fun onDown(view: View?, position: Int) {
-        val temp = selectedItem
-        selectedItem = position
-        view?.isSelected = true
-        notifyItemChanged(temp)
-        notifyItemChanged(position)
-    }
-
-    override fun onUp(view: View?, position: Int) {
-        val temp = selectedItem
-        selectedItem = RecyclerView.NO_POSITION
-        notifyItemChanged(temp)
+    override fun onUp() {
+        selectedView?.isSelected = false
+        selectedView = null
     }
 
     override fun onShortLongClick(view: View?, position: Int) {
         view?.playSoundEffect(SoundEffectConstants.CLICK)
         listener.listItemClicked(position)
+    }
+
+    override fun onViewRecycled(holder: BasicViewHolder) {
+        super.onViewRecycled(holder)
+        val imageView = holder.imageView
+        Glide.with(imageView.context).clear(imageView)
+    }
+
+    class BasicViewHolder(binding: BasicViewHolderBinding) : RecyclerView.ViewHolder(binding.root) {
+        var progressBar: ProgressBar = binding.progress
+        var imageView: ImageView = binding.image
+        var nameTextView: TextView = binding.name
+        var symbolTextView: TextView = binding.symbol
     }
 }

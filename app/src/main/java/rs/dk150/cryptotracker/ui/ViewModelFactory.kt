@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModelProvider
 import rs.dk150.cryptotracker.data.Repository
 
 /**
- * ViewModel provider factory to instantiate ViewModel.
- * Required given ViewModel has a non-empty constructor
+ * CryptoViewModel provider factory to instantiate CryptoViewModel.
+ * Required given CryptoViewModel has a non-empty constructor
  */
 class ViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
 
@@ -18,6 +18,6 @@ class ViewModelFactory(private val application: Application) : ViewModelProvider
                 Repository, application
             ) as T
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
+        throw IllegalArgumentException("Unknown CryptoViewModel class")
     }
 }

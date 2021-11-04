@@ -3,23 +3,64 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../Library/Android/sdk/platforms/android-31/data/res/layout/simple_spinner_dropdown_item.xml" value="0.21557971014492755" />
+        <entry key="../../../../Library/Android/sdk/platforms/android-31/data/res/layout/simple_spinner_item.xml" value="0.19270833333333334" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.17447916666666666" />
+        <entry key="app/src/main/res/drawable/basic_view_background.xml" value="0.3260416666666667" />
         <entry key="app/src/main/res/drawable/crypto_basic_view_background.xml" value="0.3260416666666667" />
+        <entry key="app/src/main/res/drawable/divider.xml" value="0.2324074074074074" />
+        <entry key="app/src/main/res/drawable/downward_arrow.xml" value="0.20885416666666667" />
+        <entry key="app/src/main/res/drawable/dropdown_background.xml" value="0.3260416666666667" />
+        <entry key="app/src/main/res/drawable/dropdown_background_color.xml" value="0.3260416666666667" />
+        <entry key="app/src/main/res/drawable/dropdown_view.xml" value="0.20885416666666667" />
+        <entry key="app/src/main/res/drawable/ic_baseline_arrow_drop_down_24.xml" value="0.20885416666666667" />
         <entry key="app/src/main/res/drawable/ic_baseline_broken_image_24.xml" value="0.165" />
+        <entry key="app/src/main/res/drawable/image_border.xml" value="0.16354166666666667" />
         <entry key="app/src/main/res/drawable/placeholder_img.xml" value="0.17447916666666666" />
+        <entry key="app/src/main/res/drawable/seperator.xml" value="0.16354166666666667" />
+        <entry key="app/src/main/res/drawable/spinner_background.xml" value="0.20885416666666667" />
+        <entry key="app/src/main/res/drawable/value_background.xml" value="0.3260416666666667" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.11068895643363728" />
+        <entry key="app/src/main/res/layout/basic_view_holder.xml" value="0.21195652173913043" />
         <entry key="app/src/main/res/layout/crypto_basic_view_holder.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_crypto_details.xml" value="0.125" />
-        <entry key="app/src/main/res/layout/fragment_crypto_list.xml" value="0.125" />
+        <entry key="app/src/main/res/layout/crypto_general_view_holder.xml" value="0.21557971014492755" />
+        <entry key="app/src/main/res/layout/dropdown_item.xml" value="0.21557971014492755" />
+        <entry key="app/src/main/res/layout/dropdown_view.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_basic_list.xml" value="0.1546875" />
+        <entry key="app/src/main/res/layout/fragment_crypto_details.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_crypto_general_info.xml" value="0.125" />
+        <entry key="app/src/main/res/layout/fragment_crypto_graph.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_crypto_list.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/fragment_details.xml" value="0.13489583333333333" />
+        <entry key="app/src/main/res/layout/fragment_general_info.xml" value="0.24074074074074073" />
+        <entry key="app/src/main/res/layout/fragment_general_list.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_graph.xml" value="0.21557971014492755" />
+        <entry key="app/src/main/res/layout/general_image_view_holder.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/general_info_view_holder.xml" value="0.15677083333333333" />
+        <entry key="app/src/main/res/layout/general_view_holder.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/list_item.xml" value="0.21195652173913043" />
+        <entry key="app/src/main/res/layout/spinner_item.xml" value="0.75" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
       </map>
     </option>
+  </component>
+  <component name="EntryPointsManager">
+    <list size="1">
+      <item index="0" class="java.lang.String" itemvalue="com.google.gson.annotations.SerializedName" />
+    </list>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.21557971014492755" />
+      </ProjectState>
+    </option>
   </component>
 </project>
