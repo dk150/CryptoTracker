@@ -14,13 +14,21 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 
+/**
+ * Fragment defining second page showing two tabs with
+ * details about selected cryptocurrency (general info
+ * tab & graph view tab)
+ */
 class DetailsFragment : Fragment() {
 
     private var _binding: FragmentDetailsBinding? = null
     // This property is only valid between onCreateView and onDestroyView
     private val binding get() = _binding!!
+    /* position value is received as an argument and used to identify
+       selected cryptoCurrency */
     private var position: Int = RecyclerView.NO_POSITION
 
+    // 2 tabs
     private lateinit var viewPager: ViewPager2
     private lateinit var pagerAdapter: FragmentStateAdapter
 
@@ -41,18 +49,17 @@ class DetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // set up viewPager
         viewPager = binding.pager
         val tabLayout = binding.tabLayout
         pagerAdapter = ScreenSlidePagerAdapter(this)
-        viewPager.getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER
         viewPager.adapter = pagerAdapter
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
@@ -69,11 +76,9 @@ class DetailsFragment : Fragment() {
         }.attach()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
+    /**
+     * Adapter for ViewPager
+     */
     private inner class ScreenSlidePagerAdapter(fa: Fragment?) :
         FragmentStateAdapter(fa!!) {
         override fun createFragment(pagePosition: Int): Fragment {
@@ -93,5 +98,10 @@ class DetailsFragment : Fragment() {
         override fun getItemCount(): Int {
             return NUM_PAGES
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

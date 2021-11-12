@@ -14,25 +14,61 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import rs.dk150.cryptotracker.R
-import rs.dk150.cryptotracker.data.CryptoField
+import rs.dk150.cryptotracker.data.CryptoCurrencyList
 import rs.dk150.cryptotracker.databinding.GeneralImageViewHolderBinding
 import rs.dk150.cryptotracker.databinding.GeneralTextViewHolderBinding
 
 
+/**
+ * Adapter for list of general info(details) about selected cryptocurrency
+ */
 class GeneralListAdapter(
-    private val list: List<CryptoField>?
+    private val list: List<CryptoCurrencyList.CryptoCurrency.CryptoField>?
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    enum class ViewHolderType {
+        TEXT, IMAGE
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (list?.get(position)?.label == "imageUrl") {
+            ViewHolderType.IMAGE.ordinal
+        } else {
+            ViewHolderType.TEXT.ordinal
+        }
+    }
+
+    /**
+     * Class defining TEXT ViewHolder for detail info about cryptocurrency
+     */
+    class GeneralTextViewHolder(binding: GeneralTextViewHolderBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        val valueLabel: TextView = binding.valueLabel
+        val value: TextView = binding.value
+
+    }
+
+    /**
+     * Class defining IMAGE ViewHolder for detail info about cryptocurrency
+     */
+    class GeneralImageViewHolder(binding: GeneralImageViewHolderBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        val value: ImageView = binding.image
+        val progress: View = binding.progress
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
-            TEXT -> GeneralTextViewHolder(
+        /* heterogeneous viewHolders because imageView(for symbol image) replaces textView (for other
+           attributes) */
+        return when (ViewHolderType.values()[viewType]) {
+            ViewHolderType.TEXT -> GeneralTextViewHolder(
                 GeneralTextViewHolderBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
                 )
             )
-            else -> GeneralImageViewHolder(
+            ViewHolderType.IMAGE -> GeneralImageViewHolder(
                 GeneralImageViewHolderBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
@@ -46,19 +82,26 @@ class GeneralListAdapter(
         list?.let {
             val pos = viewHolder.bindingAdapterPosition
             val element = list[pos]
-            when (viewHolder.itemViewType) {
-                TEXT -> {
+            when (ViewHolderType.values()[viewHolder.itemViewType]) {
+                ViewHolderType.TEXT -> {
                     val holder = viewHolder as GeneralTextViewHolder
                     val valueLabel = holder.valueLabel
+                    // set textView values
                     valueLabel.text =
                         String.format(
                             valueLabel.context.getString(R.string.value_label),
                             element.label
                         )
-                    holder.value.text = formatValue(element.value)
+                    val regex = "url".toRegex(RegexOption.IGNORE_CASE)
+                    holder.value.text = if(regex.containsMatchIn(element.label)) {
+                        formatUrlValue(element.value)
+                    } else {
+                        element.value
+                    }
                 }
-                else -> {
+                ViewHolderType.IMAGE -> {
                     val holder = viewHolder as GeneralImageViewHolder
+                    // lazy loading of symbol image
                     val imageView = holder.value
                     val progressBar = holder.progress
                     var requestBuilder =
@@ -71,6 +114,7 @@ class GeneralListAdapter(
                             target: Target<Drawable>?,
                             isFirstResource: Boolean
                         ): Boolean {
+                            // set placeholder image
                             progressBar.visibility = View.INVISIBLE
                             imageView.setImageDrawable(
                                 AppCompatResources.getDrawable(
@@ -101,7 +145,7 @@ class GeneralListAdapter(
         }
     }
 
-    private fun formatValue(value: String): CharSequence {
+    private fun formatUrlValue(value: String): CharSequence {
         val v = value.trim()
         return if (v[0] == '/') {
             "http://www.cryptocompare.com${v}"
@@ -111,31 +155,5 @@ class GeneralListAdapter(
     }
 
     override fun getItemCount(): Int = list?.size ?: 0
-
-    override fun getItemViewType(position: Int): Int {
-        return if (list?.get(position)?.label == "imageUrl") {
-            IMAGE
-        } else {
-            TEXT
-        }
-    }
-
-    companion object {
-        private const val TEXT = 0
-        private const val IMAGE = 1
-    }
-
-    class GeneralTextViewHolder(binding: GeneralTextViewHolderBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        val valueLabel: TextView = binding.valueLabel
-        val value: TextView = binding.value
-
-    }
-
-    class GeneralImageViewHolder(binding: GeneralImageViewHolderBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        val value: ImageView = binding.image
-        val progress: View = binding.progress
-    }
 
 }

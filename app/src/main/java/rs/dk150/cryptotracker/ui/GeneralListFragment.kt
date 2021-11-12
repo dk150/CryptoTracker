@@ -19,8 +19,13 @@ import kotlin.reflect.KProperty1
 import kotlin.reflect.full.memberProperties
 
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
+import rs.dk150.cryptotracker.model.CryptoViewModel
 
-
+/**
+ * Fragment defining first tab of second page, showing general info
+ * of selected cryptocurrency including its value converted to selected
+ * comparison currency & list of its details(additional) attributes
+ */
 class GeneralListFragment : Fragment() {
 
     private lateinit var viewModel: CryptoViewModel
@@ -29,15 +34,22 @@ class GeneralListFragment : Fragment() {
 
     // This property is only valid between onCreateView and onDestroyView
     private val binding get() = _binding!!
-    private lateinit var cryptoRecyclerView: RecyclerView
-    private lateinit var textField: AutoCompleteTextView
-    private lateinit var valueTextView: TextView
+    // currency conversion views
     private lateinit var menuLabel: View
     private lateinit var menu: View
+    private lateinit var textField: AutoCompleteTextView
     private lateinit var doubleDot: View
+    private lateinit var conversionValueTextView: TextView
+
     private lateinit var divider: View
+
+    private lateinit var cryptoRecyclerView: RecyclerView
     private lateinit var loadingProgressBar: View
+
+    /* position value is received as an argument and used to identify
+       selected cryptoCurrency */
     private var position: Int = RecyclerView.NO_POSITION
+    // flag specifying whether to show toast message about fetch result
     private var sentRequest = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,19 +76,34 @@ class GeneralListFragment : Fragment() {
                 this.requireActivity(),
                 ViewModelFactory(application)
             )[CryptoViewModel::class.java]
-
-        cryptoRecyclerView = binding.list
-        valueTextView = binding.value
-        textField = binding.textField
         menuLabel = binding.menuLabel
         menu = binding.menu
         doubleDot = binding.doubleDot
+        textField = binding.textField
+        conversionValueTextView = binding.value
+
         divider = binding.divider
+
+        cryptoRecyclerView = binding.list
         loadingProgressBar = binding.loading
 
-        // hide value views
-        setValueViewsVisibility(false)
+        // hide currency conversion views
+        setConversionViewsVisibility(false)
 
+        // set up dropdown menu
+        val list = viewModel.conversionCurrencies
+        val dropDownAdapter = DropdownAdapter(
+            requireContext(),
+            R.layout.dropdown_item,
+            list
+        )
+        textField.apply {
+            setAdapter(dropDownAdapter)
+            setText(list[0], false)
+            doOnTextChanged { text, _, _, _ ->
+                updateValueTextView(text.toString())
+            }
+        }
 
         // set up recyclerView
         cryptoRecyclerView.apply {
@@ -92,26 +119,13 @@ class GeneralListFragment : Fragment() {
             }
         }
 
-        // set up dropdown menu
-        val list = viewModel.conversionCurrencies
-        val adapter = DropdownAdapter(
-            requireContext(),
-            R.layout.dropdown_item,
-            list
-        )
-
-        textField.apply {
-            setAdapter(adapter)
-            setText(list[0], false)
-            doOnTextChanged { text, _, _, _ ->
-                updateValueTextView(text.toString())
-            }
-        }
-
+        // add viewModel live data observers
         viewModel.crCsDetailsResult.observe(viewLifecycleOwner,
             Observer { result ->
                 result ?: return@Observer
                 result.onSuccess {
+                    /* live data value is not cleared, so we need to check if the last fetched
+                       data was for currently selected currency */
                     val symbol = it?.data?.values?.elementAtOrNull(0)?.symbol
                     if (viewModel.getSymbol(position).equals(symbol)) {
                         showList(it)
@@ -130,6 +144,7 @@ class GeneralListFragment : Fragment() {
                 }
             })
 
+        // fetch data from viewModel
         if (viewModel.crCsDetailsResult.value == null) {
             sentRequest = true
             viewModel.fetchCrCsDetails(position)
@@ -138,13 +153,14 @@ class GeneralListFragment : Fragment() {
 
     private fun updateValueTextView(text: String) {
         viewModel.crCsConversionResult?.getOrNull()?.let{
+            // get value of field whose name is the same as text
             val value = (CurrencyConversion::class.memberProperties
                 .first { property -> property.name.equals(text, true) } as KProperty1<Any, *>).get(it)
-            valueTextView.text = value?.toString() ?: ""
+            conversionValueTextView.text = value?.toString() ?: ""
         }
     }
 
-    private fun setValueViewsVisibility(b: Boolean) {
+    private fun setConversionViewsVisibility(b: Boolean) {
         val visibility = if (b) {
             View.VISIBLE
         } else {
@@ -153,7 +169,7 @@ class GeneralListFragment : Fragment() {
         menuLabel.visibility = visibility
         menu.visibility = visibility
         doubleDot.visibility = visibility
-        valueTextView.visibility = visibility
+        conversionValueTextView.visibility = visibility
         divider.visibility = visibility
     }
 
@@ -174,7 +190,7 @@ class GeneralListFragment : Fragment() {
                 )
                     .show()
             }*/
-            setValueViewsVisibility(true)
+            setConversionViewsVisibility(true)
         }
     }
 

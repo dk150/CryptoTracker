@@ -7,6 +7,10 @@ import android.view.ViewConfiguration
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.abs
 
+/** Class registering short & long click on recyclerView item
+ * (in this project used to allow change of background on
+ * item selected)
+ */
 class RecyclerTouchListener(
     context: Context?,
     private val clickListener: ClickListener?
@@ -15,6 +19,8 @@ class RecyclerTouchListener(
     private var mDownY = 0f
     private var mDownX = 0f
     private var mScrolling = false
+    /* system defined minimal drag distance to differentiate between click and drag gesture;
+     it takes into account screen size and density */
     private val mTouchSlop: Int = ViewConfiguration.get(context).scaledTouchSlop
 
     override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {

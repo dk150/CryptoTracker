@@ -6,7 +6,10 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 
-
+/**
+ * Class used as RecyclerView Decorator to show horizontal bottom divider for
+ * all child views except the last one
+ */
 class DividerItemDecorator(private val mDivider: Drawable) :
     ItemDecoration() {
 

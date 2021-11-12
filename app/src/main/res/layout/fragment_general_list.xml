@@ -46,7 +46,8 @@
             android:cursorVisible="false"
             android:focusable="false"
             android:focusableInTouchMode="false"
-            android:inputType="none"/>
+            android:inputType="none"
+            tools:text="BTC"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 

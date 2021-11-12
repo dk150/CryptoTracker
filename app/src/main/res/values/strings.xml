@@ -9,4 +9,12 @@
     <string name="double_dot"><b>:&#160;</b></string>
     <string name="value_label">%1$s:</string>
     <string name="imageLabel">image:</string>
+    <string name="historicalValueLbl">Show historical value by:&#160;</string>
+    <string name="_1h">1H</string>
+    <string name="_3h">3H</string>
+    <string name="_1d">1D</string>
+    <string name="_3d">3D</string>
+    <string name="_1w">1W</string>
+    <string name="_2w">2W</string>
+    <string name="_1m">1M</string>
 </resources>

@@ -4,9 +4,10 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import rs.dk150.cryptotracker.data.Repository
+import rs.dk150.cryptotracker.model.CryptoViewModel
 
 /**
- * CryptoViewModel provider factory to instantiate CryptoViewModel.
+ * CryptoViewModel provider factory to instantiate CryptoViewModel;
  * Required given CryptoViewModel has a non-empty constructor
  */
 class ViewModelFactory(private val application: Application) : ViewModelProvider.Factory {

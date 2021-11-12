@@ -16,15 +16,25 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import rs.dk150.cryptotracker.R
-import rs.dk150.cryptotracker.data.CryptoCurrency
+import rs.dk150.cryptotracker.data.CryptoCurrencyList
 import rs.dk150.cryptotracker.databinding.BasicViewHolderBinding
 
-
+/**
+ * Adapter for list of all cryptocurrencies
+ */
 class BasicListAdapter(
-    private val list: List<CryptoCurrency>?,
+    private val list: List<CryptoCurrencyList.CryptoCurrency>?,
     private val listener: CryptoListListener
 ) : RecyclerView.Adapter<BasicListAdapter.BasicViewHolder>(),
     RecyclerTouchListener.ClickListener {
+
+    /** Interface allowing signalling to fragment when item is clicked */
+    interface CryptoListListener {
+        fun listItemClicked(position: Int)
+    }
+
+    // used by selector for background of itemView
+    private var selectedView: View? = null
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
@@ -36,10 +46,30 @@ class BasicListAdapter(
         )
     }
 
-    private var selectedView: View? = null
+    // recyclerTouchListener.clickListener method implementations
+    override fun onDown(view: View?) {
+        selectedView = view
+        selectedView?.isSelected = true
+    }
 
-    interface CryptoListListener {
-        fun listItemClicked(position: Int)
+    override fun onUp() {
+        selectedView?.isSelected = false
+        selectedView = null
+    }
+
+    override fun onShortLongClick(view: View?, position: Int) {
+        view?.playSoundEffect(SoundEffectConstants.CLICK)
+        listener.listItemClicked(position)
+    }
+
+    /**
+     * Class defining ViewHolder for basic info about cryptocurrency
+     */
+    class BasicViewHolder(binding: BasicViewHolderBinding) : RecyclerView.ViewHolder(binding.root) {
+        var progressBar: ProgressBar = binding.progress
+        var imageView: ImageView = binding.image
+        var nameTextView: TextView = binding.name
+        var symbolTextView: TextView = binding.symbol
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BasicViewHolder {
@@ -56,8 +86,12 @@ class BasicListAdapter(
         list?.let { list ->
             val pos = holder.bindingAdapterPosition
             val element = list.elementAt(pos)
+
+            // set textView values
             holder.nameTextView.text = element.fullName
             holder.symbolTextView.text = element.symbol
+
+            // lazy loading of symbol image
             val imageView = holder.imageView
             imageView.visibility = View.INVISIBLE
             val progressBar = holder.progressBar
@@ -72,6 +106,7 @@ class BasicListAdapter(
                     target: Target<Drawable>?,
                     isFirstResource: Boolean
                 ): Boolean {
+                    // set placeholder image
                     progressBar.visibility = View.INVISIBLE
                     imageView.setImageDrawable(
                         getDrawable(
@@ -102,31 +137,10 @@ class BasicListAdapter(
 
     override fun getItemCount(): Int = list?.size ?: 0
 
-    override fun onDown(view: View?) {
-        selectedView = view
-        selectedView?.isSelected = true
-    }
-
-    override fun onUp() {
-        selectedView?.isSelected = false
-        selectedView = null
-    }
-
-    override fun onShortLongClick(view: View?, position: Int) {
-        view?.playSoundEffect(SoundEffectConstants.CLICK)
-        listener.listItemClicked(position)
-    }
-
     override fun onViewRecycled(holder: BasicViewHolder) {
         super.onViewRecycled(holder)
+        // when view is about to get recycled, we can stop glide request for that view
         val imageView = holder.imageView
         Glide.with(imageView.context).clear(imageView)
-    }
-
-    class BasicViewHolder(binding: BasicViewHolderBinding) : RecyclerView.ViewHolder(binding.root) {
-        var progressBar: ProgressBar = binding.progress
-        var imageView: ImageView = binding.image
-        var nameTextView: TextView = binding.name
-        var symbolTextView: TextView = binding.symbol
     }
 }

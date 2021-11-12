@@ -15,8 +15,12 @@ import androidx.recyclerview.widget.RecyclerView
 import rs.dk150.cryptotracker.R
 import rs.dk150.cryptotracker.data.CryptoCurrencyList
 import rs.dk150.cryptotracker.databinding.FragmentBasicListBinding
+import rs.dk150.cryptotracker.model.CryptoViewModel
 
-
+/**
+ * Fragment defining first page showing list of all cryptocurrencies with
+ * their basic(summary) attributes
+ */
 class BasicListFragment : Fragment(), BasicListAdapter.CryptoListListener {
 
     private lateinit var viewModel: CryptoViewModel
@@ -32,10 +36,8 @@ class BasicListFragment : Fragment(), BasicListAdapter.CryptoListListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentBasicListBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -61,6 +63,7 @@ class BasicListFragment : Fragment(), BasicListAdapter.CryptoListListener {
             }
         }
 
+        // add viewModel live data observers
         viewModel.crCsResult.observe(viewLifecycleOwner,
             Observer { singleEvent ->
                 singleEvent ?: return@Observer
@@ -72,6 +75,7 @@ class BasicListFragment : Fragment(), BasicListAdapter.CryptoListListener {
                 result?.onFailure { showFetchFailed(it.message) }
             })
 
+        // fetch data from viewModel
         if (viewModel.crCsResult.value == null) {
             viewModel.fetchCrCs()
         }
@@ -101,6 +105,7 @@ class BasicListFragment : Fragment(), BasicListAdapter.CryptoListListener {
 
     override fun listItemClicked(position: Int) {
         view?.let {
+            // navigate to second page fragment
             val action =
                 BasicListFragmentDirections.actionBasicListFragmentToDetailsFragment(
                     position

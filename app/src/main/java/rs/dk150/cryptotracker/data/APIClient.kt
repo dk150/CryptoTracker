@@ -6,7 +6,9 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-
+/**
+ * Retrofit singleton
+ */
 internal object APIClient {
     private var retrofit: Retrofit? = null
     val client: Retrofit?

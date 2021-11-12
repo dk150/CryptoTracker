@@ -5,14 +5,17 @@ import com.google.gson.annotations.SerializedName
 import kotlin.reflect.full.hasAnnotation
 import kotlin.reflect.full.memberProperties
 
-class CurrencyConversion {
+/**
+ * POJO mapping currency conversion response
+ */
+class CurrencyConversion: ResponsePOJO {
     @SerializedName("Response")
     @Expose
-    val response: String? = null
+    override val response: String? = null
 
     @SerializedName("Message")
     @Expose
-    val message: String? = null
+    override val message: String? = null
 
     @SerializedName("BTC")
     @Expose
@@ -50,6 +53,7 @@ class CurrencyConversion {
     val eur: Double? = null
 
     companion object {
+        /* get field names through reflection */
         @JvmStatic
         fun conversionCurrencies(): List<String> {
             return CurrencyConversion::class.memberProperties.filter {
