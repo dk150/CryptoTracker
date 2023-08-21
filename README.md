@@ -1,5 +1,5 @@
 # CryptoTracker
-<p><b>• kotlin Android project</b></p>
+<p><b>• Android app written in kotlin</b></p>
 <p><b>• uses CryptoCompare API to display list of available coins and selected coin info including price history graph</b></p>
 <p><i>MVVM+Repository+Factory+Retrofit+Glide+ViewPager+Reflection+ExposedDropDownMenu+SurfaceView</i></p>
 
