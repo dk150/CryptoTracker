@@ -1,7 +1,7 @@
 # CryptoTracker
 <p><b>• uses CryptoCompare API to display to the user a list of available coins and each selected coin info, including its price history graph</b></p>
 <p><b>• completed in a few days as a demo project during interview process **for a first job**</b></p>
-<p><b>• demo: https://vimeo.com/865268358?share=copy</b></p>
+<p><b>• demo: https://vimeo.com/865268358</b></p>
 <p><i>MVVM+Repository+Factory+Retrofit+Glide+ViewPager+Reflection+ExposedDropDownMenu+SurfaceView</i></p>
 
 <hr/>
